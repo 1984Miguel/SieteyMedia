@@ -2,13 +2,14 @@
 
  $palos= array("bastos","copas","espadas","oros");
  $cartas= array("As",2,3,4,5,6,7,"Sota","Caballo","Rey");
+$otro="si";
 
-
-
-    for($x=0;$x<=3;$x++) 
+do{
+    //se inicializa en cada partida
+    for($x=0;$x<count($palos);$x++) 
      {
         echo "\n".$palos[$x];
-        for($y=0;$y<=9;$y++)
+        for($y=0;$y<count($cartas);$y++)
         {
                 
             $encontrado[$x][$y]=false;
@@ -21,21 +22,19 @@
 
 
     echo "Bienvenido al black Jack \n";
-echo "El bojetivo del juego es acumular 7,5 Sin pasarse \n";
-echo "Tu oponente sera el propio ordenador\n";
+    echo "El bojetivo del juego es acumular 7,5 Sin pasarse \n";
+    echo "Tu oponente sera el propio ordenador\n";
+    echo"\n\n";
+    //este array guardara cartas ya vistas la usare como variable global
+    juego($palos, $cartas);
+    pintarbaraja($palos, $cartas,$encontrado);
+    echo "\n Escribe SI para jugar otra vez:";
+    $otro = trim(fgets(STDIN));
+    $otro = strtolower($otro);
 
-echo"\n\n\n\n";
+} while($otro=="si");
 
-
- //este array guardara cartas ya vistas la usare como variable global
-   
-juego($palos, $cartas);
-
-
-
-
-pintarbaraja($palos, $cartas,$encontrado);
-
+    echo "\n hasta otra ";
 
 
 function juego($palos, $cartas){
@@ -52,7 +51,7 @@ function juego($palos, $cartas){
         {
             echo "juega la maquina \n";
             $contador[0]+=tirada($palos, $cartas);
-            echo "los puntos acumulados por la maquina  son $contador[0] \n";
+            echo "\t \t los puntos acumulados por la maquina  son $contador[0] \n";
             
         }
         else{
@@ -73,7 +72,7 @@ function juego($palos, $cartas){
         {
             echo "juega el usuario \n";
             $contador[1]+=tirada($palos, $cartas);  
-            echo "los puntos acumulados por el jugador son $contador[1] \n";
+            echo "\t \t los puntos acumulados por el jugador son $contador[1] \n";
         }
          else{
             echo "Escribe P para pasar:";
@@ -88,7 +87,7 @@ function juego($palos, $cartas){
             {
                 echo "juega el usuario \n";
                  $contador[1]+=tirada($palos, $cartas);  
-                 echo "los puntos acumulados por el jugador son $contador[1] \n";
+                 echo "\t \t los puntos acumulados por el jugador son $contador[1] \n";
             }
              
         }
@@ -106,7 +105,7 @@ function juego($palos, $cartas){
            
         }
 
-        echo"\n\n";
+        echo"\n";
 
 
 
@@ -117,12 +116,17 @@ function juego($palos, $cartas){
 
 function tirada($palos, $cartas)
 {
+global $encontrado; 
+
+do{
  $palo=rand(0, 3);
  $carta=rand(0, 9 );
+} while ($encontrado[$palo][$carta]==true);
+
 
 $valor= valorc($cartas,$carta);
- echo "la carta elegida al azar es  $cartas[$carta] de $palos[$palo] y vale: $valor \n";
-global $encontrado;
+ echo "\t la carta elegida al azar es  $cartas[$carta] de $palos[$palo] y vale: $valor \n";
+
 $encontrado[$palo][$carta]=true;
 
 return $valor;
@@ -151,18 +155,18 @@ function pintarbaraja($palos, $cartas,$encontrado)
 
     
 
-    for($x=0;$x<=3;$x++) 
+    for($x=0;$x<count($palos);$x++) 
     {
         echo "\n $palos[$x]";
-        for($y=0;$y<=9;$y++)
+        for($y=0;$y<count($cartas);$y++)
         {
             
             if(!$encontrado[$x][$y])
             {
-                echo "$cartas[$y]:V  ";
+                echo "$cartas[$y]:M  ";
             }else
             {
-                echo "$cartas[$y] :X  ";
+                echo "$cartas[$y]:X  ";
             }
             
 
